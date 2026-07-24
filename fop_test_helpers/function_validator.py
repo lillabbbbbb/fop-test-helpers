@@ -108,11 +108,6 @@ def validate_function_structure(
 
     return errors
 
-
-# lib/test_helpers.py
-"""
-Core validation logic - shared across all tasks
-"""
 import random
 import pytest
 from .error_collector import ErrorCollector
