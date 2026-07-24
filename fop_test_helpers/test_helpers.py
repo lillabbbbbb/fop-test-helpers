@@ -95,7 +95,6 @@ def _register_individual_test(student_module, reference_module, function_name, c
     # Create a unique test name based on the description
     test_name = f"test_{function_name}_{descr.replace(' ', '_')[:30]}"
     
-    @pytest.mark.parametrize('_', [None])
     @pytest.mark.name(f"Test {function_name}(): {descr}")
     @pytest.mark.description(f"Check {function_name}() behavior: {descr}")
     @pytest.mark.weight(case.get("weight", 1))
