@@ -96,7 +96,6 @@ def _register_individual_test(student_module, reference_module, function_name, c
     test_name = f"test_{function_name}_{descr.replace(' ', '_')[:30]}"
     
     @pytest.mark.name(f"Test {function_name}(): {descr}")
-    @pytest.mark.description(f"Check {function_name}() behavior: {descr}")
     @pytest.mark.weight(case.get("weight", 1))
     def test_case(_=None):
         random.seed(12345)
