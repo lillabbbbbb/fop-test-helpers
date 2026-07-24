@@ -167,7 +167,6 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
             # ================================================================
             if unit_test:
                 
-                @pytest.mark.parametrize('_', [None])
                 @pytest.mark.name(f"Test {function_name}() - {descr}")
                 @pytest.mark.description(f"Check {function_name}() behavior: {descr}")
                 @pytest.mark.weight(case.get("weight", 1))
