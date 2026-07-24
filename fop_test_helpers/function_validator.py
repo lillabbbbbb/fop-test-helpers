@@ -1,4 +1,5 @@
 import pytest
+from cg_pytest_reporter import name, description, weight
 from .ast_checks import function_exists, check_signature, has_return_statement, check_open_mode, check_file_closed
 
 def validate_function_structure(

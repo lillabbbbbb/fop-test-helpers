@@ -1,6 +1,7 @@
 # lib/test_helpers.py
 import random
 import pytest
+from cg_pytest_reporter import name, description, weight
 from .error_collector import ErrorCollector
 from .io_formatter import format_errors
 
