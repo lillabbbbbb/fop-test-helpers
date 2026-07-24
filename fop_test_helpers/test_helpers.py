@@ -1,7 +1,18 @@
 # lib/test_helpers.py
 import random
 import pytest
-from cg_pytest_reporter import name, description, weight
+
+# Try to import from cg_pytest_reporter, but fallback to dummy markers
+try:
+    from cg_pytest_reporter import name, description, weight
+    print("✅ Using cg_pytest_reporter")
+except ImportError:
+    print("⚠️ cg_pytest_reporter not found, using dummy markers")
+    # Create dummy markers
+    def name(n): return lambda f: f
+    def description(d): return lambda f: f
+    def weight(w): return lambda f: f
+
 from .error_collector import ErrorCollector
 from .io_formatter import format_errors
 
