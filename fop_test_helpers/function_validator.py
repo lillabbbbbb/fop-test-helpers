@@ -296,25 +296,3 @@ def run_validation(student_module, reference_module, config):
     formatted = format_errors(errors)
     
     return passed, errors, formatted
-
-
-def generate_tests(student_module, reference_module, config):
-    """
-    Generate pytest tests (unit_test mode)
-    Returns: (test_count, errors_list)
-    """
-    errors = validate_function_run(
-        student_module, 
-        reference_module, 
-        config, 
-        unit_test=True
-    )
-    
-    # Count total test cases
-    test_count = 0
-    for func_name, data in config.items():
-        runtime = data.get("runtime")
-        if runtime:
-            test_count += len(runtime.get("cases", []))
-    
-    return test_count, errors
