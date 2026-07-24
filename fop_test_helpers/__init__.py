@@ -3,10 +3,12 @@ import warnings
 
 _markers = ['name', 'description', 'weight']
 
-for marker in _markers:
-    if not hasattr(pytest.mark, marker):
-        # Create a dummy marker that does nothing
-        setattr(pytest.mark, marker, lambda *args, **kwargs: lambda f: f)
+def _dummy_marker(*args, **kwargs):
+    return lambda f: f
+
+pytest.mark.name = _dummy_marker
+pytest.mark.description = _dummy_marker
+pytest.mark.weight = _dummy_marker
 
 # Suppress warnings about unknown marks
 warnings.filterwarnings("ignore", category=pytest.PytestUnknownMarkWarning)
