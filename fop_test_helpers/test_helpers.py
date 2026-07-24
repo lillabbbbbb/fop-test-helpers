@@ -87,6 +87,10 @@ def _register_individual_test(student_module, reference_module, function_name, c
     Register a single individual pytest test with its own feedback.
     Each test case becomes a separate test with its own name and output.
     """
+    if not isinstance(case, dict):
+        print(f"⚠️ Case {index} in {function_name} is {type(case)}, expected dict")
+        print(f"   Value: {case}")
+        return
     args = case["input"]
     descr = case.get("description", f"Case {index}")
     feedback = case.get("feedback", f"Test case {index}")

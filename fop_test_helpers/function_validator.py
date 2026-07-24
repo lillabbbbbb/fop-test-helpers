@@ -166,12 +166,10 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
             # UNIT TEST MODE: Generate ONE pytest test per equivalence class
             # ================================================================
             if unit_test:
-                
                 @pytest.mark.name(f"Test {function_name}() - {descr}")
                 @pytest.mark.description(f"Check {function_name}() behavior: {descr}")
                 @pytest.mark.weight(case.get("weight", 1))
-                def test_case(_=None, 
-                             fn=function_name, 
+                def test_case(fn=function_name, 
                              a=args, 
                              c=case,
                              f_args=formatted_args,
