@@ -2,7 +2,7 @@
 import random
 import pytest
 from .error_collector import ErrorCollector
-from .formatters import format_errors
+from .io_formatter import format_errors
 
 def run_tests(student_module, reference_module, config, use_pytest=False):
     """
