@@ -52,3 +52,22 @@ def format_file_contents(title, text):
             formatted.append(f"{i:>3} | {line}")
 
     return formatted
+
+def display_newlines(text):
+    """
+    Display newline characters as actual new lines.
+    Shows special characters like \n, \t, \r visually.
+    """
+    if text is None:
+        return ""
+    
+    # Replace common escape sequences with visible representations
+    # First, handle the actual newlines
+    lines = text.split('\n')
+    
+    result = []
+    for i, line in enumerate(lines):
+        # Show line number for clarity
+        result.append(f"{line}")
+    
+    return '\n'.join(result)

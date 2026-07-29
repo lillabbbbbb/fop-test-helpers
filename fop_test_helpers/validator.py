@@ -2,7 +2,7 @@
 """
 Unified validator that routes to the appropriate validator(s) based on test_type.
 """
-
+import importlib
 from typing import Dict, List
 from .function_validator import validate_function_run
 from .file_validator import validate_file_return, validate_file_side_effect, validate_created_files
@@ -11,8 +11,7 @@ from .io_validator import validate_io_function
 def validate_solution(
     student_module,
     reference_module,
-    config: Dict,
-    is_unit_test=False
+    config: Dict
 ) -> List[Dict]:
     """
     Unified validator that routes to the appropriate validator(s).
@@ -25,6 +24,12 @@ def validate_solution(
         If no test_type is specified, it auto-detects from the config.
     """
     errors = []
+    
+    try:
+        importlib.import_module(student_module)
+    except Exception as e:
+        print("Feedback to student: Your code crashed. Always run your code locally before making a submission to CodeGrade\n")
+
     
     # Detect test types for each function
     function_test_types = detect_test_type(config)
@@ -63,8 +68,7 @@ def validate_solution(
             errors.extend(validate_function_run(
                 student_module,
                 reference_module,
-                function_config,
-                unit_test=is_unit_test
+                function_config
             ))
     
     return errors

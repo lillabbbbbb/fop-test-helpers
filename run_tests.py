@@ -470,8 +470,7 @@ def run_runtime_test(task_id: str, submission_file: str, suppress: bool = False)
     errors = validate_solution(
         student_module,
         solution_module,
-        CONFIG,
-        is_unit_test=False
+        CONFIG
     )
     
     # ===== SHARED RESULTS =====

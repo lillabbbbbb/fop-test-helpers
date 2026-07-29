@@ -68,8 +68,8 @@ def validate_io_function(
             continue
         
         for case_index, case in enumerate(runtime["cases"]):
-            inputs = case.get("inputs", [])
-            args = case.get("args", ())
+            inputs = case.get("user_input", [])
+            args = case.get("input", ())
             feedback = case.get("feedback", f"Test case {case_index + 1} failed")
             check_output = case.get("check_output", True)  # ← NEW: Default to True
             

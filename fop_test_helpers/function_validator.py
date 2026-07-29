@@ -1,16 +1,4 @@
 import pytest
-
-# Try to import from cg_pytest_reporter, but fallback to dummy markers
-try:
-    from cg_pytest_reporter import name, description, weight
-    print("✅ Using cg_pytest_reporter")
-except ImportError:
-    print("⚠️ cg_pytest_reporter not found, using dummy markers")
-    # Create dummy markers
-    def name(n): return lambda f: f
-    def description(d): return lambda f: f
-    def weight(w): return lambda f: f
-
 from .ast_checks import function_exists, check_signature, has_return_statement, check_open_mode, check_file_closed
 
 def validate_function_structure(
@@ -120,28 +108,12 @@ def validate_function_structure(
 
     return errors
 
-import random
+
 import pytest
-from .error_collector import ErrorCollector
-from .io_formatter import format_errors
+from cg_pytest_reporter import name, description, weight
+import random
 
 def validate_function_run(student_module, reference_module, config, unit_test=False):
-    """
-    Validate functions against test cases.
-    
-    Args:
-        student_module: Student's solution module
-        reference_module: Reference solution module
-        config: Test configuration dictionary
-        unit_test: If True, generates individual pytest tests (one per equivalence class).
-                 If False, returns errors list directly.
-    
-    Returns:
-        list: List of error dictionaries (empty if all tests pass)
-    """
-    
-    if unit_test:
-        ErrorCollector.reset()
     
     errors = []
 
@@ -159,95 +131,10 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
             
             random.seed(12345)
             args = case["input"]
-            descr = case.get("description", f"Case {i}")
-            formatted_args = repr(args[0]) if len(args) == 1 else repr(args)
             
-            # ================================================================
-            # UNIT TEST MODE: Generate ONE pytest test per equivalence class
-            # ================================================================
-            if unit_test:
-                @pytest.mark.name(f"Test {function_name}() - {descr}")
-                @pytest.mark.description(f"Check {function_name}() behavior: {descr}")
-                @pytest.mark.weight(case.get("weight", 1))
-                def test_case(fn=function_name, 
-                             a=args, 
-                             c=case,
-                             f_args=formatted_args,
-                             student_mod=student_module,
-                             ref_mod=reference_module):
-                    
-                    random.seed(12345)
-                    student_func = getattr(student_mod, fn)
-                    reference_func = getattr(ref_mod, fn)
-                    
-                    # Run the test for this equivalence class
-                    try:
-                        expected = reference_func(*a)
-                    except Exception as e:
-                        try:
-                            student_func(*a)
-                            error = {
-                                "heading": c.get('feedback', f'Expected exception: {descr}'),
-                                "function": fn,
-                                "details": [
-                                    f"When calling {fn}({f_args})",
-                                    f"Expected: {type(e).__name__}",
-                                    f"Received: No exception"
-                                ]
-                            }
-                            ErrorCollector.add_error(error)
-                            ErrorCollector.increment_total()
-                            pytest.fail(format_errors([error]))
-                        except Exception:
-                            ErrorCollector.increment_total()
-                            ErrorCollector.add_passed()
-                            return
-                    
-                    try:
-                        actual = student_func(*a)
-                    except Exception as e:
-                        error = {
-                            "heading": c.get('feedback', f'Runtime Error: {descr}'),
-                            "function": fn,
-                            "details": [
-                                f"When calling {fn}({f_args})",
-                                f"Your code crashed: {e}"
-                            ]
-                        }
-                        ErrorCollector.add_error(error)
-                        ErrorCollector.increment_total()
-                        pytest.fail(format_errors([error]))
-                        return
-                    
-                    if actual != expected:
-                        error = {
-                            "heading": c.get('feedback', f'Incorrect return value: {descr}'),
-                            "function": fn,
-                            "details": [
-                                f"When calling {fn}({f_args})",
-                                f"Expected: {expected!r}",
-                                f"Received: {actual!r}"
-                            ]
-                        }
-                        ErrorCollector.add_error(error)
-                        ErrorCollector.increment_total()
-                        pytest.fail(format_errors([error]))
-                        return
-                    
-                    ErrorCollector.increment_total()
-                    ErrorCollector.add_passed()
-                
-                # Register the test with unique name
-                test_name = f"test_{function_name}_case_{i}"
-                globals()[test_name] = test_case
-                
-                # Continue to next test case
-                continue
             
-            # ================================================================
-            # DIRECT MODE: Collect errors immediately (no pytest)
-            # ================================================================
-            
+            # Always collect errors
+            random.seed(12345)
             try:
                 expected = reference_func(*args)
             except Exception as e:
@@ -261,6 +148,7 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
             try:
                 actual = student_func(*args)
             except Exception as e:
+                formatted_args = repr(args[0]) if len(args) == 1 else repr(args)
                 errors.append({
                     "heading": "Runtime Error",
                     "function": function_name,
@@ -272,6 +160,7 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
                 continue
             
             if actual != expected:
+                formatted_args = repr(args[0]) if len(args) == 1 else repr(args)
                 errors.append({
                     "heading": case.get("feedback", "Incorrect return value."),
                     "function": function_name,
@@ -281,27 +170,5 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
                         f"Received: {actual!r}"
                     ]
                 })
-    
-    if not unit_test:
-        return errors
-    
-    # In unit_test mode, errors are collected during test execution
-    return []
 
-
-def run_validation(student_module, reference_module, config):
-    """
-    Run validation directly (non-pytest mode)
-    Returns: (passed, errors, formatted_output)
-    """
-    errors = validate_function_run(
-        student_module, 
-        reference_module, 
-        config, 
-        unit_test=False
-    )
-    
-    passed = len(errors) == 0
-    formatted = format_errors(errors)
-    
-    return passed, errors, formatted
+    return errors

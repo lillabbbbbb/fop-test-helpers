@@ -17,22 +17,22 @@ def create_all_files():
     
     # List all your tasks
     tasks = [
-        # Chapter 3
-        {"id": "c3_t1", "name": "compare"},
-        {"id": "c3_t2", "name": "months"},
-        {"id": "c3_t3", "name": "num_check"},
-        {"id": "c3_t4", "name": "slope"},
-        {"id": "c3_t5", "name": "even_odd"},
-        {"id": "c3_t6", "name": "temperature"},
+        # Chapter 1
+        {"id": "c1_t1", "name": "hello"},
+        {"id": "c1_t2", "name": "sum"},
+        {"id": "c1_t3", "name": "greeting"},
+        {"id": "c1_t4", "name": "numbers"},
+        {"id": "c1_t5", "name": "temperature"},
         
-        # Chapter 4
-        {"id": "c4_t1", "name": "characters"},
-        {"id": "c4_t2", "name": "for_demo"},
-        {"id": "c4_t3", "name": "while_demo"},
-        {"id": "c4_t4", "name": "digits"},
-        {"id": "c4_t5", "name": "factorial"},
-        {"id": "c4_t6", "name": "fibonacci"},
-        {"id": "c4_t7", "name": "shape"},
+        # Chapter 2
+        {"id": "c2_t1", "name": "word_count"},
+        {"id": "c2_t2", "name": "decode"},
+        {"id": "c2_t3", "name": "reverse"},
+        {"id": "c2_t4", "name": "middle"},
+        {"id": "c2_t5", "name": "f2c"},
+        {"id": "c2_t6", "name": "tracker"},
+        
+        
     ]
     
     # Create configs, mocks, and solutions
