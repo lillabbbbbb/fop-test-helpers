@@ -140,7 +140,7 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
                     "function": function_name,
                     "details": [f"The reference solution crashed: {e}"]
                 })
-                continue
+                break
             
             try:
                 actual = student_func(*args)
@@ -154,7 +154,7 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
                         f"Your code crashed: {e}"
                     ]
                 })
-                continue
+                break
             
             if actual != expected:
                 formatted_args = repr(args[0]) if len(args) == 1 else repr(args)
@@ -167,5 +167,6 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
                         f"Received: {actual!r}"
                     ]
                 })
+                break
 
     return errors

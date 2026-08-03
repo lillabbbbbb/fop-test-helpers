@@ -58,6 +58,7 @@ def validate_file_return(
                             )
                         ]
                     })
+                    break
             except Exception as e:
                 # ✅ Catch errors and report them as failures
                 errors.append({
@@ -68,6 +69,7 @@ def validate_file_return(
                         *format_file_contents("Input file", file_content)
                     ]
                 })
+                break
             finally:
 
                 remove_file(student_file)
@@ -127,6 +129,7 @@ def validate_file_side_effect(
                             *format_file_contents("Your file", actual),
                         ]
                     })
+                    break
             except Exception as e:
                 # ✅ Catch errors and report them as failures
                 errors.append({
@@ -137,6 +140,7 @@ def validate_file_side_effect(
                         *format_file_contents("Input file", file_content)
                     ]
                 })
+                break
             finally:
 
                 remove_file(student_file)
