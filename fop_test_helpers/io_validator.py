@@ -114,6 +114,7 @@ def validate_io_function(
                             f"Received return: {actual_return!r}"
                         ]
                     })
+                    break
                 
                 # ===== COMPARE OUTPUT (if check_output is True) =====
                 if check_output and actual_output != expected_output:
@@ -126,6 +127,7 @@ def validate_io_function(
                             f"Received output: {actual_output!r}"
                         ]
                     })
+                    break
                 
             except Exception as e:
                 errors.append({
@@ -135,6 +137,7 @@ def validate_io_function(
                         f"With inputs {inputs}: {e}"
                     ]
                 })
+                break
             finally:
                 builtins.input = original_input
                 sys.stdout = original_stdout
