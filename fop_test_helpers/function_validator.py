@@ -1,4 +1,5 @@
 from .ast_checks import function_exists, check_signature, has_return_statement, check_open_mode, check_file_closed
+from.preprocessor import inject_into_code
 
 def validate_function_structure(
     filename,
@@ -127,6 +128,70 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
         for i, case in enumerate(runtime["cases"]):
             
             args = case["input"]
+            
+            # ---------- handle injection into both student and reference ----------
+            if "inject" in case:
+                
+                try:
+                    inject_config = case["inject"]
+                    substring = inject_config["substring"]
+                    code_to_inject = inject_config["code"]
+                    before = inject_config.get("before", True)
+                    after = inject_config.get("after", None)
+                    
+                    # Inject into student code
+                    try:
+                        student_module_name = inject_into_code(
+                            student_module,
+                            substring,
+                            code_to_inject,
+                            before,
+                            after
+                        )
+                    except Exception as e:
+                        errors.append({
+                            "heading": "Injection Error",
+                            "function": function_name,
+                            "details": [
+                                f"Injection failed in STUDENT code ({student_module.__name__})",
+                                f"Error: {e}"
+                            ]
+                        })
+                        break
+                    
+                    # Inject into reference code
+                    try:
+                        reference_module_name = inject_into_code(
+                            reference_module,
+                            substring,
+                            code_to_inject,
+                            before,
+                            after
+                        )
+                    except Exception as e:
+                        errors.append({
+                            "heading": "Injection Error",
+                            "function": function_name,
+                            "details": [
+                                f"Injection failed in REFERENCE code ({reference_module.__name__})",
+                                f"Error: {e}"
+                            ]
+                        })
+                        break
+                    
+                    # Reload both modules
+                    student_module = importlib.reload(student_module)
+                    reference_module = importlib.reload(reference_module)
+                    student_func = getattr(student_module, function_name)
+                    reference_func = getattr(reference_module, function_name)
+                    
+                except Exception as e:
+                    errors.append({
+                        "heading": "Injection Error",
+                        "function": function_name,
+                        "details": [f"Injection failed: {e}"]
+                    })
+                    break
             
             
             if "expected" not in case or case["expected"] is None:
