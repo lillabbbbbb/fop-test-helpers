@@ -120,7 +120,7 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
         
         if runtime is None:
             continue
-
+        
         student_func = getattr(student_module, function_name)
         reference_func = getattr(reference_module, function_name)
 
@@ -130,17 +130,19 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
             args = case["input"]
             
             
-            # Always collect errors
-            random.seed(12345)
-            try:
-                expected = reference_func(*args)
-            except Exception as e:
-                errors.append({
-                    "heading": "Solution Error",
-                    "function": function_name,
-                    "details": [f"The reference solution crashed: {e}"]
-                })
-                break
+            if "expected" not in case or case["expected"] is None:
+                try:
+                    expected = reference_func(*args)
+                except Exception as e:
+                    errors.append({
+                        "heading": "Solution Error",
+                        "function": function_name,
+                        "details": [f"The reference solution crashed: {e}"]
+                    })
+                    break
+            else:
+                expected = case["expected"]
+            
             
             try:
                 actual = student_func(*args)
@@ -155,6 +157,7 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
                     ]
                 })
                 break
+            
             
             if actual != expected:
                 formatted_args = repr(args[0]) if len(args) == 1 else repr(args)

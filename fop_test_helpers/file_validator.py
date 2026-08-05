@@ -36,29 +36,40 @@ def validate_file_return(
                 additional_args = (additional_args,)
 
             try:
+                if "expected" not in case or case["expected"] is None:
+                    try:
+                        expected = reference_func(reference_file, *additional_args)
+                    except Exception as e:
+                        errors.append({
+                            "heading": "Solution Error",
+                            "function": function_name,
+                            "details": [f"The reference solution crashed: {e}"]
+                        })
+                        break
+                else:
+                    expected = case["expected"]
+                
+                    actual = student_func(student_file, *additional_args)
 
-                expected = reference_func(reference_file, *additional_args)
-                actual = student_func(student_file, *additional_args)
+                    if actual != expected:
 
-                if actual != expected:
-
-                    errors.append({
-                        "heading": case.get(
-                            "feedback",
-                            "Incorrect return value."
-                        ),
-                        "function": function_name,
-                        "details": [
-                            f"When calling {function_name}()",
-                            f"Expected: {expected!r}",
-                            f"Received: {actual!r}",
-                            *format_file_contents(
-                                "Input file",
-                                file_content
-                            )
-                        ]
-                    })
-                    break
+                        errors.append({
+                            "heading": case.get(
+                                "feedback",
+                                "Incorrect return value."
+                            ),
+                            "function": function_name,
+                            "details": [
+                                f"When calling {function_name}()",
+                                f"Expected: {expected!r}",
+                                f"Received: {actual!r}",
+                                *format_file_contents(
+                                    "Input file",
+                                    file_content
+                                )
+                            ]
+                        })
+                        break
             except Exception as e:
                 # ✅ Catch errors and report them as failures
                 errors.append({
