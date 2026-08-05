@@ -126,7 +126,6 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
 
         for i, case in enumerate(runtime["cases"]):
             
-            random.seed(12345)
             args = case["input"]
             
             
