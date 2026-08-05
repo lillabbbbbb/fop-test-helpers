@@ -17,20 +17,9 @@ def create_all_files():
     
     # List all your tasks
     tasks = [
-        # Chapter 1
-        {"id": "c1_t1", "name": "hello"},
-        {"id": "c1_t2", "name": "sum"},
-        {"id": "c1_t3", "name": "greeting"},
-        {"id": "c1_t4", "name": "numbers"},
-        {"id": "c1_t5", "name": "temperature"},
-        
-        # Chapter 2
-        {"id": "c2_t1", "name": "word_count"},
-        {"id": "c2_t2", "name": "decode"},
-        {"id": "c2_t3", "name": "reverse"},
-        {"id": "c2_t4", "name": "middle"},
-        {"id": "c2_t5", "name": "f2c"},
-        {"id": "c2_t6", "name": "tracker"},
+        # Chapter 8 missing tasks only
+        {"id": "c8_t2", "name": "rgb"},
+        {"id": "c8_t7", "name": "stopwatch"},
         
         
     ]
