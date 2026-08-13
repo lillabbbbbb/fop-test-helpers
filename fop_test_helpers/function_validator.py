@@ -110,6 +110,7 @@ def validate_function_structure(
 
 
 import random
+import copy
 
 def validate_function_run(student_module, reference_module, config, unit_test=False):
     
@@ -128,6 +129,9 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
         for i, case in enumerate(runtime["cases"]):
             
             args = case["input"]
+            reference_args = copy.deepcopy(args) # the deepcopy is especially needed when handling dictionaries
+            student_args = copy.deepcopy(args)
+            
             
             # ---------- handle injection into both student and reference ----------
             if "inject" in case:
@@ -196,7 +200,7 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
             
             if "expected" not in case or case["expected"] is None:
                 try:
-                    expected = reference_func(*args)
+                    expected = reference_func(*reference_args)
                 except Exception as e:
                     errors.append({
                         "heading": "Solution Error",
@@ -209,7 +213,7 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
             
             
             try:
-                actual = student_func(*args)
+                actual = student_func(*student_args)
             except Exception as e:
                 formatted_args = repr(args[0]) if len(args) == 1 else repr(args)
                 errors.append({
