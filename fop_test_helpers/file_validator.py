@@ -39,6 +39,15 @@ def validate_file_return(
             # Convert to tuple if needed
             if not isinstance(additional_args, tuple):
                 additional_args = (additional_args,)
+                
+            # Handle if CONFIG incorrectly has 'file': None
+            if file_content is None:
+                errors.append({
+                        "heading": "Setup Error",
+                        "function": function_name,
+                        "details": [f"Invalid CONFIG structure in AutoTest. 'file' field should never be None"]
+                    })
+                break
             
             # ===== HANDLE SPECIAL MARKERS =====
             using_missing = False
@@ -53,8 +62,8 @@ def validate_file_return(
                 import os
                 if os.path.exists(student_file):
                     os.remove(student_file)
-                    
-            else:
+            
+            else: 
                 student_file = create_temp_text(file_content)
                 reference_file = create_temp_text(file_content)
 
@@ -137,6 +146,15 @@ def validate_file_side_effect(
             
             if not isinstance(additional_args, tuple):
                 additional_args = (additional_args,)
+                
+            # Handle if CONFIG incorrectly has 'file': None
+            if file_content is None:
+                errors.append({
+                        "heading": "Setup Error",
+                        "function": function_name,
+                        "details": [f"Invalid CONFIG structure in AutoTest. 'file' field should never be None"]
+                    })
+                break
                 
             # ===== HANDLE SPECIAL MARKERS =====
             using_missing = False
