@@ -1,5 +1,6 @@
 from .ast_checks import function_exists, check_signature, has_return_statement, check_open_mode, check_file_closed
 from.preprocessor import inject_into_code
+import numpy as np
 
 def validate_function_structure(
     filename,
@@ -247,7 +248,6 @@ def values_equal(actual, expected):
     Compare two values with proper type handling.
     Returns True if values are equal, False otherwise.
     """
-    import numpy as np
     
     # Handle None
     if actual is None or expected is None:
