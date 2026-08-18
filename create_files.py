@@ -18,10 +18,10 @@ def create_all_files():
     # List all your tasks
     tasks = [
         # Missing tasks only
-        #{"id": "c10_t1", "name": "library"},
-        #{"id": "c10_t2", "name": "grades"},
-        #{"id": "c10_t3", "name": "shelter"},
-        #{"id": "c10_t4", "name": "energy"},
+        {"id": "c11_t1", "name": "artifacts"},
+        {"id": "c11_t2", "name": "receipt"},
+        {"id": "c11_t3", "name": "airports"},
+        {"id": "c11_t4", "name": "festival"},
         
         
     ]
@@ -44,6 +44,8 @@ def create_all_files():
         create_file(mock_dir / "correct2.py")
         create_file(mock_dir / "wrong1.py")
         create_file(mock_dir / "wrong2.py")
+        create_file(mock_dir / "wrong3.py")
+        create_file(mock_dir / "wrong4.py")
         
         # Create solution file
         create_file(Path(f"private/solutions/{full_id}_solution.py"))

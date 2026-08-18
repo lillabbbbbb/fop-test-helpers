@@ -227,7 +227,7 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
                 break
             
             
-            if actual != expected:
+            if not values_equal(actual, expected):
                 formatted_args = repr(args[0]) if len(args) == 1 else repr(args)
                 errors.append({
                     "heading": case.get("feedback", "Incorrect return value."),
@@ -241,3 +241,45 @@ def validate_function_run(student_module, reference_module, config, unit_test=Fa
                 break
 
     return errors
+
+def values_equal(actual, expected):
+    """
+    Compare two values with proper type handling.
+    Returns True if values are equal, False otherwise.
+    """
+    import numpy as np
+    
+    # Handle None
+    if actual is None or expected is None:
+        return actual is None and expected is None
+    
+    # Handle NumPy arrays
+    if isinstance(actual, np.ndarray) and isinstance(expected, np.ndarray):
+        return np.array_equal(actual, expected)
+    
+    # Handle mixed array/non-array
+    if isinstance(actual, np.ndarray) or isinstance(expected, np.ndarray):
+        return False
+    
+    # Handle lists and tuples with recursion
+    if isinstance(actual, (list, tuple)) and isinstance(expected, (list, tuple)):
+        if len(actual) != len(expected):
+            return False
+        for i in range(len(actual)):
+            if not values_equal(actual[i], expected[i]):
+                return False
+        return True
+    
+    # Handle dictionaries
+    if isinstance(actual, dict) and isinstance(expected, dict):
+        if len(actual) != len(expected):
+            return False
+        for key in actual:
+            if key not in expected:
+                return False
+            if not values_equal(actual[key], expected[key]):
+                return False
+        return True
+    
+    # Handle everything else
+    return actual == expected
