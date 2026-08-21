@@ -44,8 +44,8 @@ def validate_function_structure(
                     "function": function_name,
                     "details": [
                         f"'{function_name}()' has incorrect parameters.",
-                        f"Expected: {format_param_list(expected)!r}",
-                        f"Received: {format_param_list(actual)!r}"
+                        f"Expected: {format_param_list(expected)}",
+                        f"Received: {format_param_list(actual)}"
                     ]
                 })
                 continue
