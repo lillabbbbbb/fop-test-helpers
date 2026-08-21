@@ -33,7 +33,7 @@ def validate_io_function(
                 "function": function_name,
                 "details": [f"Could not find '{function_name}()'"]
             })
-            continue
+            break
         
         if hasattr(reference_module, function_name):
             reference_func = getattr(reference_module, function_name)
@@ -43,7 +43,7 @@ def validate_io_function(
                 "function": function_name,
                 "details": [f"Reference solution for '{function_name}()' not found"]
             })
-            continue
+            break
         
         for case_index, case in enumerate(runtime["cases"]):
             inputs = case.get("user_input", [])
@@ -103,7 +103,7 @@ def validate_io_function(
                             f"Received return: {actual_return!r}"
                         ]
                     })
-                    continue
+                    break
                 
                 # ===== COMPARE OUTPUT =====
                 if check_output and expected_output is not None:
@@ -117,7 +117,7 @@ def validate_io_function(
                                 f"Actual output: {actual_output_stu!r}"
                             ]
                         })
-                        continue
+                        break
                 
                 elif check_output and expected_output is None:
                     if actual_output_stu != actual_output_ref:
@@ -130,7 +130,7 @@ def validate_io_function(
                                 f"Received output: {actual_output_stu!r}"
                             ]
                         })
-                        continue
+                        break
                 
             except EOFError as e:
                 errors.append({
@@ -141,7 +141,7 @@ def validate_io_function(
                         f"Error: {e}"
                     ]
                 })
-                continue
+                break
             except Exception as e:
                 errors.append({
                     "heading": "Runtime Error",
@@ -150,7 +150,7 @@ def validate_io_function(
                         f"With inputs {inputs}: {e}"
                     ]
                 })
-                continue
+                break
             finally:
                 builtins.input = original_input
                 sys.stdout = original_stdout
