@@ -1,5 +1,6 @@
 from .ast_checks import function_exists, check_signature, has_return_statement, check_open_mode, check_file_closed
 from.preprocessor import inject_into_code
+from .io_formatter import format_param_list
 import numpy as np
 
 def validate_function_structure(
@@ -43,8 +44,8 @@ def validate_function_structure(
                     "function": function_name,
                     "details": [
                         f"'{function_name}()' has incorrect parameters.",
-                        f"Expected: {expected!r}",
-                        f"Received: {actual!r}"
+                        f"Expected: {format_param_list(expected)!r}",
+                        f"Received: {format_param_list(actual)!r}"
                     ]
                 })
                 continue

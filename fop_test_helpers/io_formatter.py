@@ -39,6 +39,14 @@ def format_errors(errors):
 
     return "\n".join(lines)
 
+def format_param_list(params):
+    """Format a list of parameters without quotes or brackets."""
+    if params is None:
+        return "None"
+    if not params:
+        return "no parameters"
+    return ", ".join(params)
+
 
 def format_file_contents(title, text):
     lines = text.splitlines()
