@@ -18,10 +18,7 @@ def create_all_files():
     # List all your tasks
     tasks = [
         # Missing tasks only
-        {"id": "c11_t1", "name": "artifacts"},
-        {"id": "c11_t2", "name": "receipt"},
-        {"id": "c11_t3", "name": "airports"},
-        {"id": "c11_t4", "name": "festival"},
+        {"id": "c0_t1", "name": "calculator"},
         
         
     ]

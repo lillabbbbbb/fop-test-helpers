@@ -48,10 +48,11 @@ def validate_io_function(
         for case_index, case in enumerate(runtime["cases"]):
             inputs = case.get("user_input", [])
             args = case.get("input", ())
-            expected_output = case.get("expected", None)
+            expected = case.get("expected", None)
+            expected_output = case.get("expected_output", None)
             feedback = case.get("feedback", f"Test case {case_index + 1} failed")
             
-            check_output = is_io_test or isinstance(expected_output, str)
+            check_output = isinstance(expected_output, str)
             
             def create_input_queue():
                 return list(inputs)
